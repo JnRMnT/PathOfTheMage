@@ -4,11 +4,11 @@ namespace JMGames.Scripts.Spells
 {
     public class LightningBolt : BaseSpell
     {
-        public override string AnimationStateName
+        public override string[] AnimationTriggerNames
         {
             get
             {
-                return base.AnimationStateName;
+                return new string[] { "CastSpell2H1" };
             }
         }
 

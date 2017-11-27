@@ -1,17 +1,18 @@
 ﻿using JMGames.Framework;
 using JMGames.Scripts.ObjectControllers.Character;
 using JMGames.Scripts.Spells;
-using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
-using System;
 
 public class SpellManager : JMBehaviour
 {
     public static SpellManager Instance;
-    public List<SpellWrapper> SpellSlots;
+    public BaseSpell[] SpellSlots;
     public BaseCharacterController CharacterController;
 
-    public SpellWrapper[] AvailableSpells;
+    public BaseSpell[] AvailableSpells;
+
+    private int activeSpellSlot;
     public override void DoStart()
     {
         Instance = this;
@@ -23,27 +24,31 @@ public class SpellManager : JMBehaviour
 
     protected void InitializeAvailableSpells()
     {
-        foreach (SpellWrapper spell in AvailableSpells)
+        if (AvailableSpells != null)
         {
-            spell.Spell = (BaseSpell)Activator.CreateInstance(Type.GetType("JMGames.Scripts.Spells." + spell.Name));
+            foreach (BaseSpell spell in AvailableSpells)
+            {
+
+            }
         }
     }
 
     protected void InitializeSpellSlots()
     {
-        SpellSlots = new List<SpellWrapper>()
-        {
-            GetSpell("LightningBolt")
-        };
+        SpellSlots = new BaseSpell[10];
+        SpellSlots[0] = GetSpell("LightningBolt");
     }
 
-    public SpellWrapper GetSpell(string name)
+    public BaseSpell GetSpell(string name)
     {
-        foreach (SpellWrapper availableSpell in AvailableSpells)
+        if (AvailableSpells != null)
         {
-            if (availableSpell.Spell.Name.Equals(name))
+            foreach (BaseSpell availableSpell in AvailableSpells)
             {
-                return availableSpell;
+                if (availableSpell.Name.Equals(name))
+                {
+                    return availableSpell;
+                }
             }
         }
 
@@ -52,8 +57,56 @@ public class SpellManager : JMBehaviour
 
     public void CastSpell(int spellSlot)
     {
-        GameObject spellInstance = GameObject.Instantiate(SpellSlots[spellSlot].Prefab);
-        spellInstance.transform.position = new Vector3(MainPlayerController.Instance.transform.position.x, MainPlayerController.Instance.transform.position.y + 10, MainPlayerController.Instance.transform.position.z);
+        if (SpellSlots[spellSlot] != null)
+        {
+            activeSpellSlot = spellSlot;
+            MainPlayerController.Instance.Animator.SetTrigger((GetRandomSpellTriggerName()));
+            DoCast();
+        }
+    }
 
+    private string GetRandomSpellTriggerName()
+    {
+        if (activeSpellSlot != -1 && SpellSlots[activeSpellSlot] != null)
+        {
+            int castTriggerIndex = Mathf.RoundToInt(Random.Range(0, SpellSlots[activeSpellSlot].AnimationTriggerNames.Length - 1));
+            return SpellSlots[activeSpellSlot].AnimationTriggerNames[castTriggerIndex];
+        }
+
+        return string.Empty;
+    }
+
+    public void DoCast()
+    {
+        if (activeSpellSlot != -1 && SpellSlots[activeSpellSlot] != null)
+        {
+            GameObject spellInstance = GameObject.Instantiate(SpellSlots[activeSpellSlot].Prefab);
+            spellInstance.transform.position = MainPlayerController.Instance.RightHand.transform.position + transform.forward * 0.5f + transform.up * -2f;
+            spellInstance.transform.rotation = MainPlayerController.Instance.transform.rotation;
+            RFX4_EffectEvent effectEvent = MainPlayerController.Instance.GetComponent<RFX4_EffectEvent>();
+            Transform handEffect = spellInstance.transform.Find("Hand");
+            if (handEffect != null)
+            {
+                effectEvent.CharacterEffect = handEffect.gameObject;
+            }
+            Transform handEffect2 = spellInstance.transform.Find("Hand2");
+            if (handEffect2 != null)
+            {
+                effectEvent.CharacterEffect2 = handEffect2.gameObject;
+            }
+            Transform effect = spellInstance.transform.Find("Effect");
+            if (effect != null)
+            {
+                effectEvent.Effect = effect.gameObject;
+            }
+            Transform additionalEffect = spellInstance.transform.Find("Additional");
+            if (additionalEffect != null)
+            {
+                effectEvent.AdditionalEffect = additionalEffect.gameObject;
+            }
+
+            spellInstance.SetActive(true);
+            activeSpellSlot = -1;
+        }
     }
 }

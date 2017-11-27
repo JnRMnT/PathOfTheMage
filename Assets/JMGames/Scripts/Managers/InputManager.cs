@@ -140,13 +140,12 @@ namespace JMGames.Scripts.Managers
         {
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
-                SpellManager.Instance.CastSpell(1);
+                SpellManager.Instance.CastSpell(0);
             }
             else if (Input.GetKeyDown(KeyCode.Alpha2))
             {
-
+                SpellManager.Instance.CastSpell(1);
             }
-
         }
         #endregion
         #region Camera Methods

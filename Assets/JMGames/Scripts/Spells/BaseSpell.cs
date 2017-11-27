@@ -1,4 +1,6 @@
-﻿using System;
+﻿using JMGames.Framework;
+using JMGames.Scripts.Behaviours;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,8 +8,9 @@ using UnityEngine;
 
 namespace JMGames.Scripts.Spells
 {
-    public class BaseSpell
+    public class BaseSpell : JMBehaviour
     {
+        #region Properties
         public virtual string Name
         {
             get
@@ -16,11 +19,19 @@ namespace JMGames.Scripts.Spells
             }
         }
 
-        public virtual string AnimationStateName
+        public virtual string[] AnimationTriggerNames
         {
             get
             {
-                return string.Empty;
+                return null;
+            }
+        }
+
+        public virtual float Damage
+        {
+            get
+            {
+                return 0f;
             }
         }
 
@@ -28,8 +39,28 @@ namespace JMGames.Scripts.Spells
         {
             get
             {
+                return gameObject;
+            }
+        }
+
+        public Sprite Thumbnail
+        {
+            get
+            {
                 return null;
             }
         }
+        #endregion
+
+
+        public void HandleCollision(RaycastHit hit)
+        {
+            HitReceiver hitReceiver = hit.transform.GetComponent<HitReceiver>();
+            if (hitReceiver != null)
+            {
+                hitReceiver.ReceiveHit(Damage);
+            }
+        }
+
     }
 }
