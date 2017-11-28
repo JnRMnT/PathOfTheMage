@@ -1,5 +1,9 @@
 ﻿using Invector.CharacterController;
 using JMGames.Framework;
+using JMGames.Scripts.ObjectControllers;
+using JMGames.Scripts.ObjectControllers.Character;
+using JMGames.Scripts.Spells;
+using JMGames.Scripts.Utilities;
 using UnityEngine;
 
 namespace JMGames.Scripts.Managers
@@ -8,6 +12,7 @@ namespace JMGames.Scripts.Managers
     {
         #region variables
 
+        public static InputManager Instance;
         [Header("Default Inputs")]
         public string horizontalInput = "Horizontal";
         public string verticallInput = "Vertical";
@@ -31,12 +36,23 @@ namespace JMGames.Scripts.Managers
         [HideInInspector]
         public bool keepDirection;                          // keep the current direction in case you change the cameraState
 
-        protected vThirdPersonController cc;                // access the ThirdPersonController component                
+        protected vThirdPersonController cc;                // access the ThirdPersonController component       
+        public int LayerMaskExcludingPlayer;
 
+        public AreaSelector AreaSelector;
+        public bool IsAreaSelectorActive
+        {
+            get
+            {
+                return AreaSelector.gameObject.activeInHierarchy;
+            }
+        }
         #endregion
 
         public override void DoStart()
         {
+            Instance = this;
+            LayerMaskExcludingPlayer = RaycastingUtilities.CreateLayerMask(true, LayerMask.NameToLayer("Player"));
             CharacterInit();
             base.DoStart();
         }
@@ -75,7 +91,7 @@ namespace JMGames.Scripts.Managers
         {
             if (cc == null) return;
             cc.UpdateMotor();                   // call ThirdPersonMotor methods               
-            cc.UpdateAnimator();                // call ThirdPersonAnimator methods	
+            cc.UpdateAnimator();                // call ThirdPersonAnimator methods
             base.DoUpdate();
         }
 
@@ -90,7 +106,15 @@ namespace JMGames.Scripts.Managers
                 SprintInput();
                 StrafeInput();
                 JumpInput();
-                SpellInput();
+                if (cc.speed < 0.3f)
+                {
+                    SpellInput();
+                    AOESelectionInput();
+                }
+                else
+                {
+                    MainPlayerController.Instance.StopAlignment();
+                }
             }
         }
 
@@ -146,6 +170,21 @@ namespace JMGames.Scripts.Managers
             {
                 SpellManager.Instance.CastSpell(1);
             }
+        }
+
+        protected virtual void AOESelectionInput()
+        {
+            if (IsAreaSelectorActive && Input.GetKeyDown(KeyCode.Mouse0) && AreaSelector.IsValid)
+            {
+                AreaSelector.gameObject.SetActive(false);
+                SpellManager.Instance.TriggerAnimationAndCast(AreaSelector.transform.position);
+            }
+        }
+
+        public void InitializeAreaSelector(BaseSpell spell)
+        {
+            AreaSelector.gameObject.SetActive(true);
+            AreaSelector.Initialize(spell.AOERadius);
         }
         #endregion
         #region Camera Methods

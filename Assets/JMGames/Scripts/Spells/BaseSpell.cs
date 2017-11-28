@@ -1,5 +1,6 @@
 ﻿using JMGames.Framework;
 using JMGames.Scripts.Behaviours;
+using JMGames.Scripts.Spells.Effects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +28,54 @@ namespace JMGames.Scripts.Spells
             }
         }
 
+        public virtual bool RotationNeeded
+        {
+            get
+            {
+                return true;
+            }
+        }
+
+        public virtual Vector3 CharacterRotationOffset
+        {
+            get
+            {
+                return new Vector3(0, 20f, 0);
+            }
+        }
+
+        public virtual SpellTypeEnum Type
+        {
+            get
+            {
+                return SpellTypeEnum.LinearCasting;
+            }
+        }
+
+        public virtual AOETypeEnum AOEType
+        {
+            get
+            {
+                return AOETypeEnum.Undefined;
+            }
+        }
+
+        public virtual float AOERadius
+        {
+            get
+            {
+                return 5f;
+            }
+        }
+
+        public virtual float MaxCastDistance
+        {
+            get
+            {
+                return 20f;
+            }
+        }
+
         public virtual float Damage
         {
             get
@@ -43,7 +92,15 @@ namespace JMGames.Scripts.Spells
             }
         }
 
-        public Sprite Thumbnail
+        public virtual Sprite Thumbnail
+        {
+            get
+            {
+                return null;
+            }
+        }
+
+        public virtual Type Effect
         {
             get
             {
@@ -58,9 +115,16 @@ namespace JMGames.Scripts.Spells
             HitReceiver hitReceiver = hit.transform.GetComponent<HitReceiver>();
             if (hitReceiver != null)
             {
-                hitReceiver.ReceiveHit(Damage);
+                hitReceiver.ReceiveHit(GetHitInfo());
             }
         }
 
+        protected virtual HitInfo GetHitInfo()
+        {
+            return new HitInfo
+            {
+                BaseDamage = Damage
+            };
+        }
     }
 }

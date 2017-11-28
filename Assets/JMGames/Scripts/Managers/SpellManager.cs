@@ -12,31 +12,36 @@ public class SpellManager : JMBehaviour
 
     public BaseSpell[] AvailableSpells;
 
-    private int activeSpellSlot;
+    private int activeSpellSlot = -1;
+
+    public BaseSpell ActiveSpell
+    {
+        get
+        {
+            if (activeSpellSlot != -1 && SpellSlots[activeSpellSlot] != null)
+            {
+                return SpellSlots[activeSpellSlot];
+            }
+            else
+            {
+                return null;
+            }
+        }
+    }
+
     public override void DoStart()
     {
         Instance = this;
-        InitializeAvailableSpells();
         InitializeSpellSlots();
         CharacterController = GetComponent<BaseCharacterController>();
         base.DoStart();
-    }
-
-    protected void InitializeAvailableSpells()
-    {
-        if (AvailableSpells != null)
-        {
-            foreach (BaseSpell spell in AvailableSpells)
-            {
-
-            }
-        }
     }
 
     protected void InitializeSpellSlots()
     {
         SpellSlots = new BaseSpell[10];
         SpellSlots[0] = GetSpell("LightningBolt");
+        SpellSlots[1] = GetSpell("WaterDragon");
     }
 
     public BaseSpell GetSpell(string name)
@@ -59,9 +64,9 @@ public class SpellManager : JMBehaviour
     {
         if (SpellSlots[spellSlot] != null)
         {
+            MainPlayerController.Instance.InputManager.AreaSelector.gameObject.SetActive(false);
             activeSpellSlot = spellSlot;
-            MainPlayerController.Instance.Animator.SetTrigger((GetRandomSpellTriggerName()));
-            DoCast();
+            StartCoroutine(WaitForAction());
         }
     }
 
@@ -76,37 +81,104 @@ public class SpellManager : JMBehaviour
         return string.Empty;
     }
 
-    public void DoCast()
+    public void DoCast(Vector3 selectedAreaCenter)
     {
-        if (activeSpellSlot != -1 && SpellSlots[activeSpellSlot] != null)
+        if (ActiveSpell != null)
         {
             GameObject spellInstance = GameObject.Instantiate(SpellSlots[activeSpellSlot].Prefab);
             spellInstance.transform.position = MainPlayerController.Instance.RightHand.transform.position + transform.forward * 0.5f + transform.up * -2f;
             spellInstance.transform.rotation = MainPlayerController.Instance.transform.rotation;
+            if (ActiveSpell.Type == SpellTypeEnum.LinearCasting)
+            {
+                //Give camera aim for linear casting
+                float xAngle = Camera.main.transform.rotation.eulerAngles.x - 15f;
+                if (xAngle < 0)
+                {
+                    xAngle = 0;
+                }
+                spellInstance.transform.rotation = Quaternion.Euler(xAngle, MainPlayerController.Instance.transform.rotation.eulerAngles.y, MainPlayerController.Instance.transform.rotation.eulerAngles.z);
+            }
+            else if (ActiveSpell.Type == SpellTypeEnum.AOE && ActiveSpell.AOEType == AOETypeEnum.SelectedArea)
+            {
+                spellInstance.transform.position = selectedAreaCenter;
+            }
+
+
             RFX4_EffectEvent effectEvent = MainPlayerController.Instance.GetComponent<RFX4_EffectEvent>();
             Transform handEffect = spellInstance.transform.Find("Hand");
             if (handEffect != null)
             {
                 effectEvent.CharacterEffect = handEffect.gameObject;
             }
+            else
+            {
+                effectEvent.CharacterEffect = null;
+            }
+
             Transform handEffect2 = spellInstance.transform.Find("Hand2");
             if (handEffect2 != null)
             {
                 effectEvent.CharacterEffect2 = handEffect2.gameObject;
+            }
+            else
+            {
+                effectEvent.CharacterEffect2 = null;
             }
             Transform effect = spellInstance.transform.Find("Effect");
             if (effect != null)
             {
                 effectEvent.Effect = effect.gameObject;
             }
+            else
+            {
+                effectEvent.Effect = null;
+            }
             Transform additionalEffect = spellInstance.transform.Find("Additional");
             if (additionalEffect != null)
             {
                 effectEvent.AdditionalEffect = additionalEffect.gameObject;
             }
+            else
+            {
+                effectEvent.AdditionalEffect = null;
+            }
 
             spellInstance.SetActive(true);
             activeSpellSlot = -1;
         }
+    }
+
+
+    protected IEnumerator WaitForAction()
+    {
+        if (ActiveSpell != null)
+        {
+            if (ActiveSpell.RotationNeeded)
+            {
+                MainPlayerController.Instance.AlignWithCamera(SpellSlots[activeSpellSlot].CharacterRotationOffset);
+                yield return new WaitUntil(() => { return MainPlayerController.Instance.IsAlignedWithCamera(); });
+            }
+
+            if (ActiveSpell != null)
+            {
+                bool delayCast = false;
+                if (ActiveSpell.Type == SpellTypeEnum.AOE && ActiveSpell.AOEType == AOETypeEnum.SelectedArea)
+                {
+                    MainPlayerController.Instance.InputManager.InitializeAreaSelector(ActiveSpell);
+                    delayCast = true;
+                }
+
+                if (!delayCast)
+                {
+                    TriggerAnimationAndCast(Vector3.zero);
+                }
+            }
+        }
+    }
+
+    public void TriggerAnimationAndCast(Vector3 selectedAreaCenter)
+    {
+        MainPlayerController.Instance.Animator.SetTrigger((GetRandomSpellTriggerName()));
+        DoCast(selectedAreaCenter);
     }
 }

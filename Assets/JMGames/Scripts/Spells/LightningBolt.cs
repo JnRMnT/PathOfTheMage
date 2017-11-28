@@ -19,5 +19,13 @@ namespace JMGames.Scripts.Spells
                 return "LightningBolt";
             }
         }
+
+        public override SpellTypeEnum Type
+        {
+            get
+            {
+                return base.Type;
+            }
+        }
     }
 }
