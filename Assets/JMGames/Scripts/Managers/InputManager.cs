@@ -4,7 +4,9 @@ using JMGames.Scripts.ObjectControllers;
 using JMGames.Scripts.ObjectControllers.Character;
 using JMGames.Scripts.Spells;
 using JMGames.Scripts.Utilities;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace JMGames.Scripts.Managers
 {
@@ -83,7 +85,10 @@ namespace JMGames.Scripts.Managers
         {
             if (cc == null) return;
             cc.AirControl();
-            CameraInput();
+            if (!Cursor.visible)
+            {
+                CameraInput();
+            }
         }
 
 
@@ -152,9 +157,13 @@ namespace JMGames.Scripts.Managers
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 if (!Cursor.visible)
+                {
                     Cursor.visible = true;
+                }
                 else
-                    Application.Quit();
+                {
+                    //Show menu
+                }
             }
         }
 
@@ -176,8 +185,15 @@ namespace JMGames.Scripts.Managers
         {
             if (IsAreaSelectorActive && Input.GetKeyDown(KeyCode.Mouse0) && AreaSelector.IsValid)
             {
+                if (SpellManager.Instance.TriggerAnimationAndCast(AreaSelector.transform.position))
+                {
+                    AreaSelector.gameObject.SetActive(false);
+                }
+            }
+            else if (Input.GetKeyDown(KeyCode.Escape))
+            {
                 AreaSelector.gameObject.SetActive(false);
-                SpellManager.Instance.TriggerAnimationAndCast(AreaSelector.transform.position);
+                SpellManager.Instance.ActiveSpell = null;
             }
         }
 
@@ -191,18 +207,34 @@ namespace JMGames.Scripts.Managers
 
         protected virtual void CameraInput()
         {
-            if (tpCamera == null)
-                return;
-            var Y = Input.GetAxis(rotateCameraYInput);
-            var X = Input.GetAxis(rotateCameraXInput);
+            if (!Cursor.visible)
+            {
+                if (tpCamera == null)
+                    return;
+                var Y = Input.GetAxis(rotateCameraYInput);
+                var X = Input.GetAxis(rotateCameraXInput);
 
-            tpCamera.RotateCamera(X, Y);
+                tpCamera.RotateCamera(X, Y);
 
-            // tranform Character direction from camera if not KeepDirection
-            if (!keepDirection)
-                cc.UpdateTargetDirection(tpCamera != null ? tpCamera.transform : null);
-            // rotate the character with the camera while strafing        
-            RotateWithCamera(tpCamera != null ? tpCamera.transform : null);
+                // tranform Character direction from camera if not KeepDirection
+                if (!keepDirection)
+                    cc.UpdateTargetDirection(tpCamera != null ? tpCamera.transform : null);
+                // rotate the character with the camera while strafing        
+                RotateWithCamera(tpCamera != null ? tpCamera.transform : null);
+            }
+            else if (CheckForMenuDisableClick())
+            {
+                Cursor.visible = false;
+            }
+        }
+
+        protected bool CheckForMenuDisableClick()
+        {
+            if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
+            {
+                return true;
+            }
+            return false;
         }
 
         protected virtual void UpdateCameraStates()

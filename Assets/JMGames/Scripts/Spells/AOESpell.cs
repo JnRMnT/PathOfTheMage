@@ -20,7 +20,7 @@ namespace JMGames.Scripts.Spells
             {
                 foreach (Collider hitCollider in hitColliders)
                 {
-                    if (hitCollider.tag == "Enemy")
+                    //if (hitCollider.tag == "Enemy")
                     {
                         HitReceiver hitReceiver = hitCollider.GetComponent<HitReceiver>();
                         if(hitReceiver != null)

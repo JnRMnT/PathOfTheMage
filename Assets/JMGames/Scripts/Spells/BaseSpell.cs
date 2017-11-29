@@ -20,6 +20,14 @@ namespace JMGames.Scripts.Spells
             }
         }
 
+        public virtual float ManaCost
+        {
+            get
+            {
+                return 0f;
+            }
+        }
+
         public virtual string[] AnimationTriggerNames
         {
             get

@@ -15,6 +15,15 @@ namespace JMGames.Scripts.Spells
             }
         }
 
+
+        public override float ManaCost
+        {
+            get
+            {
+                return 100f;
+            }
+        }
+
         public override bool RotationNeeded
         {
             get
@@ -55,6 +64,14 @@ namespace JMGames.Scripts.Spells
             }
         }
 
+        public override float Damage
+        {
+            get
+            {
+                return 50f;
+            }
+        }
+
         public override void DoStart()
         {
             StartCoroutine(WaitForDragonToFall());
@@ -64,7 +81,7 @@ namespace JMGames.Scripts.Spells
         protected IEnumerator WaitForDragonToFall()
         {
             yield return new WaitForSeconds(3.75f);
-            //Give damage here
+            GiveDamage();
         }
     }
 }

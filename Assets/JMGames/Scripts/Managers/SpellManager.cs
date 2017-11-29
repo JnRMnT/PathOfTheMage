@@ -1,4 +1,5 @@
 ﻿using JMGames.Framework;
+using JMGames.Scripts.Behaviours;
 using JMGames.Scripts.ObjectControllers.Character;
 using JMGames.Scripts.Spells;
 using System.Collections;
@@ -26,6 +27,21 @@ public class SpellManager : JMBehaviour
             {
                 return null;
             }
+        }
+        set
+        {
+            if (value == null)
+            {
+                activeSpellSlot = -1;
+            }
+        }
+    }
+
+    public bool HasActiveSpell
+    {
+        get
+        {
+            return ActiveSpell != null;
         }
     }
 
@@ -62,11 +78,18 @@ public class SpellManager : JMBehaviour
 
     public void CastSpell(int spellSlot)
     {
-        if (SpellSlots[spellSlot] != null)
+        if (SpellSlots[spellSlot] != null && !HasActiveSpell)
         {
-            MainPlayerController.Instance.InputManager.AreaSelector.gameObject.SetActive(false);
-            activeSpellSlot = spellSlot;
-            StartCoroutine(WaitForAction());
+            if (MainPlayerController.Instance.IsInAnimation("Free Movement") || (SpellSlots[spellSlot].Type == SpellTypeEnum.AOE && SpellSlots[spellSlot].AOEType == AOETypeEnum.SelectedArea))
+            {
+                //Do not wait for cooldown for area selection
+                if (MainPlayerController.Instance.ManaPool.HasSufficientMana(SpellSlots[spellSlot].ManaCost))
+                {
+                    MainPlayerController.Instance.InputManager.AreaSelector.gameObject.SetActive(false);
+                    activeSpellSlot = spellSlot;
+                    StartCoroutine(WaitForAction());
+                }
+            }
         }
     }
 
@@ -83,9 +106,9 @@ public class SpellManager : JMBehaviour
 
     public void DoCast(Vector3 selectedAreaCenter)
     {
-        if (ActiveSpell != null)
+        if (ActiveSpell != null && MainPlayerController.Instance.ManaPool.HasSufficientMana(ActiveSpell.ManaCost))
         {
-            GameObject spellInstance = GameObject.Instantiate(SpellSlots[activeSpellSlot].Prefab);
+            GameObject spellInstance = GameObject.Instantiate(ActiveSpell.Prefab);
             spellInstance.transform.position = MainPlayerController.Instance.RightHand.transform.position + transform.forward * 0.5f + transform.up * -2f;
             spellInstance.transform.rotation = MainPlayerController.Instance.transform.rotation;
             if (ActiveSpell.Type == SpellTypeEnum.LinearCasting)
@@ -103,6 +126,11 @@ public class SpellManager : JMBehaviour
                 spellInstance.transform.position = selectedAreaCenter;
             }
 
+            RFX4_TransformMotion[] transformMotions = spellInstance.GetComponentsInChildren<RFX4_TransformMotion>();
+            if (transformMotions != null && transformMotions.Length > 0)
+            {
+                transformMotions[0].CollisionEnter += SpellCollisionHandler;
+            }
 
             RFX4_EffectEvent effectEvent = MainPlayerController.Instance.GetComponent<RFX4_EffectEvent>();
             Transform handEffect = spellInstance.transform.Find("Hand");
@@ -144,10 +172,34 @@ public class SpellManager : JMBehaviour
             }
 
             spellInstance.SetActive(true);
-            activeSpellSlot = -1;
+            MainPlayerController.Instance.ManaPool.UseMana(ActiveSpell.ManaCost);
+            StartCoroutine(CastingCooldown());
+        }
+        else
+        {
+            ActiveSpell = null;
         }
     }
 
+    private void SpellCollisionHandler(object sender, RFX4_TransformMotion.RFX4_CollisionInfo e)
+    {
+        RFX4_TransformMotion transformMotion = (RFX4_TransformMotion)sender;
+        HitReceiver hitReceiver = e.Hit.transform.GetComponent<HitReceiver>();
+        if (hitReceiver != null)
+        {
+            BaseSpell spell = transformMotion.GetComponent<BaseSpell>();
+            HitInfo hitInfo = new HitInfo();
+            hitInfo.BaseDamage = spell.Damage;
+            hitReceiver.ReceiveHit(hitInfo);
+        }
+    }
+
+    protected IEnumerator CastingCooldown()
+    {
+        //Gets stuck for not being called
+        yield return new WaitForSecondsRealtime(0.5f);
+        activeSpellSlot = -1;
+    }
 
     protected IEnumerator WaitForAction()
     {
@@ -176,9 +228,21 @@ public class SpellManager : JMBehaviour
         }
     }
 
-    public void TriggerAnimationAndCast(Vector3 selectedAreaCenter)
+    public bool TriggerAnimationAndCast(Vector3 selectedAreaCenter)
     {
-        MainPlayerController.Instance.Animator.SetTrigger((GetRandomSpellTriggerName()));
-        DoCast(selectedAreaCenter);
+        if (MainPlayerController.Instance.IsInAnimation("Free Movement"))
+        {
+            MainPlayerController.Instance.Animator.SetTrigger((GetRandomSpellTriggerName()));
+            DoCast(selectedAreaCenter);
+            return true;
+        }
+        else
+        {
+            if(ActiveSpell != null && (ActiveSpell.Type != SpellTypeEnum.AOE || ActiveSpell.AOEType != AOETypeEnum.SelectedArea))
+            {
+                ActiveSpell = null;
+            }
+            return false;
+        }
     }
 }

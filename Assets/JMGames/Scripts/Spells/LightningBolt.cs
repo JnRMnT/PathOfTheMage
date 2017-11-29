@@ -12,11 +12,27 @@ namespace JMGames.Scripts.Spells
             }
         }
 
+        public override float ManaCost
+        {
+            get
+            {
+                return 50f;
+            }
+        }
+
         public override string Name
         {
             get
             {
                 return "LightningBolt";
+            }
+        }
+
+        public override float Damage
+        {
+            get
+            {
+                return 10f;
             }
         }
 
