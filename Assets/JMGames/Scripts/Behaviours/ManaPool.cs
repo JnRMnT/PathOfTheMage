@@ -1,10 +1,29 @@
-﻿using JMGames.Framework;
+﻿using System;
+using JMGames.Framework;
+using JMGames.Scripts.Behaviours.Attributes;
+using System.Collections.Generic;
 
 namespace JMGames.Scripts.Behaviours
 {
     public class ManaPool : JMBehaviour
     {
-        public float ManaCapacity = 100f;
+        public List<IAttributeModifier> ActiveCapacityModifiers = new List<IAttributeModifier>();
+        public List<IAttributeModifier> ActiveReplenishModifiers = new List<IAttributeModifier>();
+        private float BaseManaCapacity = 1000f;
+        private float manaCapacity = -1;
+        public float ManaCapacity
+        {
+            get
+            {
+                if(manaCapacity == -1)
+                {
+                    CalculateManaCapacity();
+                }
+
+                return manaCapacity;
+            }
+        }
+
         public float CurrentMana;
         private float BaseReplenishAmountOverTime = 0.3f;
 
@@ -25,6 +44,19 @@ namespace JMGames.Scripts.Behaviours
             {
                 return ManaCapacity / 100 * CurrentMana;
             }
+        }
+
+        private void CalculateManaCapacity()
+        {
+            manaCapacity = BaseManaCapacity;
+            float multiplier = 1f;
+            foreach (IAttributeModifier modifier in ActiveCapacityModifiers)
+            {
+                manaCapacity += modifier.GetBaseAddition();
+                multiplier += modifier.GetMultiplierAddition();
+            }
+
+            manaCapacity *= multiplier;
         }
 
         public override void DoStart()
@@ -60,8 +92,13 @@ namespace JMGames.Scripts.Behaviours
         private void ReplenisManaOverTime()
         {
             float replenishAmount = BaseReplenishAmountOverTime;
-            //TODO: calculate additional mana regen modifiers here
 
+            float multiplier = 1f;
+            foreach (IAttributeModifier modifier in ActiveCapacityModifiers)
+            {
+                multiplier += modifier.GetMultiplierAddition();
+            }
+            replenishAmount *= multiplier;
             ReplenishMana(replenishAmount);
         }
 
@@ -77,6 +114,11 @@ namespace JMGames.Scripts.Behaviours
             {
                 return false;
             }
+        }
+
+        public void SetCapacityDirty()
+        {
+            manaCapacity = -1;
         }
     }
 }

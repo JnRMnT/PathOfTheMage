@@ -36,7 +36,7 @@ public class Experience : JMBehaviour
         {
             if (requiredExpToLevelUp == -1)
             {
-                requiredExpToLevelUp = (long)(Mathf.Round(Mathf.Pow(2, CurrentLevel / 10) * 1000));
+                requiredExpToLevelUp = (long)(Mathf.Round(Mathf.Pow(10, (float)CurrentLevel / 10f) * 1000));
             }
             return requiredExpToLevelUp;
         }
