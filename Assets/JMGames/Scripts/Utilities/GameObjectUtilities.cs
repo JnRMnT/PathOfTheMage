@@ -1,4 +1,5 @@
-﻿using JMGames.Framework;
+﻿using System;
+using JMGames.Framework;
 using UnityEngine;
 
 namespace JMGames.Scripts.Utilities
@@ -45,6 +46,24 @@ namespace JMGames.Scripts.Utilities
             }
 
             return new Vector3(((point.x - minX) / (maxX - minX)) * 2 - 1, ((point.y - minY) / (maxY - minY)) * 2 - 1, ((point.z - minZ) / (maxZ - minZ)) * 2 - 1);
+        }
+
+        public static void DisableObjectBehaviours(GameObject gameObject)
+        {
+            MonoBehaviour[] allBehaviours = gameObject.GetComponentsInChildren<MonoBehaviour>();
+            foreach (MonoBehaviour behaviour in allBehaviours)
+            {
+                behaviour.enabled = false;
+            }
+        }
+
+        internal static void DisableColliders(GameObject gameObject)
+        {
+            Collider[] allColliders = gameObject.GetComponentsInChildren<Collider>();
+            foreach (Collider collider in allColliders)
+            {
+                collider.enabled = false;
+            }
         }
     }
 }

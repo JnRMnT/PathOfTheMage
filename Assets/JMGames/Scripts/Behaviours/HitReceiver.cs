@@ -1,13 +1,17 @@
 ﻿
 using JMGames.Framework;
+using JMGames.Scripts.Constants;
 using JMGames.Scripts.Spells;
+using JMGames.Scripts.Utilities;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace JMGames.Scripts.Behaviours
 {
     [RequireComponent(typeof(Life), typeof(Animator))]
     public class HitReceiver : JMBehaviour
     {
+        public bool IsImmortal = false;
         public Life Life;
         public Animator Animator;
         public override void DoStart()
@@ -24,19 +28,60 @@ namespace JMGames.Scripts.Behaviours
         /// <returns>If character died or not</returns>
         public bool ReceiveHit(HitInfo hitInfo)
         {
-            Animator.SetTrigger("TakeHit");
-            Animator.SetFloat("ReceivedHitX", hitInfo.RelativeHitPoint.x);
-            Animator.SetFloat("ReceivedHitY", hitInfo.RelativeHitPoint.y);
+            Animator.SetTrigger(AnimationConstants.TakeHitTriggerName);
+            Animator.SetFloat(AnimationConstants.ReceivedHitXParameter, hitInfo.RelativeHitPoint.x);
+            Animator.SetFloat(AnimationConstants.ReceivedHitYParameter, hitInfo.RelativeHitPoint.y);
             float hitDamage = CalculateActualDamage(hitInfo);
             Armor armor = GetComponent<Armor>();
+            bool died = false;
             if (armor != null)
             {
-                return armor.DecreaseArmor(hitDamage);
+                died = armor.DecreaseArmor(hitDamage);
             }
             else
             {
-                return Life.DecreaseHealth(hitDamage);
+                died = Life.DecreaseHealth(hitDamage);
             }
+
+            if (died)
+            {
+                HandleDying();
+                Animator.SetTrigger(AnimationConstants.DieTrigger);
+            }
+
+            return died;
+        }
+
+        protected virtual void HandleDying()
+        {
+            if (IsImmortal)
+            {
+                return;
+            }
+
+            GameObjectUtilities.DisableObjectBehaviours(gameObject);
+            GameObjectUtilities.DisableColliders(gameObject);
+            NavMeshAgent navMeshAgent = GetComponent<NavMeshAgent>();
+            if (navMeshAgent != null)
+            {
+                navMeshAgent.enabled = false;
+            }
+
+            NavMeshObstacle navMeshObstacle = GetComponent<NavMeshObstacle>();
+            if (navMeshObstacle != null)
+            {
+                navMeshObstacle.enabled = false;
+            }
+
+            Rigidbody rigidbody = GetComponent<Rigidbody>();
+            if (rigidbody != null)
+            {
+                rigidbody.useGravity = false;
+                rigidbody.isKinematic = true;
+            }
+
+            this.SendMessage("Die", this, SendMessageOptions.DontRequireReceiver);
+            DestroyDeadCharacter deadCharacterComponent = this.gameObject.AddComponent<DestroyDeadCharacter>();
         }
 
         /// <summary>

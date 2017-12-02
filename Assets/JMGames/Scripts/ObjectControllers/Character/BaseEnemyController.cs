@@ -56,6 +56,11 @@ namespace JMGames.Scripts.ObjectControllers.Character
             Animator.SetFloat(AnimationConstants.RandomHitParameter, randomHit);
         }
 
+        public virtual void Die()
+        {
+            Animator.SetFloat(AnimationConstants.RandomHitParameter, 0);
+        }
+
         protected IEnumerator EnableCheckHit()
         {
             yield return new WaitUntil(() => { return !Animator.GetCurrentAnimatorStateInfo(AnimationConstants.EnemyHitLayer).IsName(AnimationConstants.EmptyStateName); });
@@ -69,7 +74,7 @@ namespace JMGames.Scripts.ObjectControllers.Character
 
         public void GiveHit(Collider collider, Vector3 hitPoint)
         {
-            if (checkHit && collider.transform.GetInstanceID() == currentTarget.GetInstanceID())
+            if (checkHit && collider.transform.GetInstanceID() == currentTarget.GetInstanceID() && enabled)
             {
                 HitReceiver[] hitReceivers = currentTarget.GetComponentsInChildren<HitReceiver>();
                 if (hitReceivers != null && hitReceivers.Length > 0)

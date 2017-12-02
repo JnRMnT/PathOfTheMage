@@ -57,7 +57,7 @@ namespace JMGames.Scripts.Behaviours
             }
         }
         
-        private float BaseReplenishAmountOverTime = 0.001f;
+        public float BaseReplenishAmountOverTime = 0.5f;
 
         /// <summary>
         /// Holds the object's health
@@ -85,7 +85,7 @@ namespace JMGames.Scripts.Behaviours
 
         public bool IncreaseHealth(float amount)
         {
-            this.CurrentHealth++;
+            this.CurrentHealth+= amount;
             if (CurrentHealth >= MaxHealth)
             {
                 CurrentHealth = MaxHealth;

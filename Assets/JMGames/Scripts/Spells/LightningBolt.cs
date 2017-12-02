@@ -32,7 +32,7 @@ namespace JMGames.Scripts.Spells
         {
             get
             {
-                return 10f;
+                return 600f;
             }
         }
 
