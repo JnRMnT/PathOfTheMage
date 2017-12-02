@@ -5,9 +5,18 @@ using UnityEngine;
 
 namespace JMGames.Scripts.Behaviours
 {
-    [RequireComponent(typeof(Life))]
+    [RequireComponent(typeof(Life), typeof(Animator))]
     public class HitReceiver : JMBehaviour
     {
+        public Life Life;
+        public Animator Animator;
+        public override void DoStart()
+        {
+            Life = GetComponent<Life>();
+            Animator = GetComponent<Animator>();
+            base.DoStart();
+        }
+
         /// <summary>
         /// Receives the damage and handles armor/health reduction.
         /// </summary>
@@ -15,6 +24,9 @@ namespace JMGames.Scripts.Behaviours
         /// <returns>If character died or not</returns>
         public bool ReceiveHit(HitInfo hitInfo)
         {
+            Animator.SetTrigger("TakeHit");
+            Animator.SetFloat("ReceivedHitX", hitInfo.RelativeHitPoint.x);
+            Animator.SetFloat("ReceivedHitY", hitInfo.RelativeHitPoint.y);
             float hitDamage = CalculateActualDamage(hitInfo);
             Armor armor = GetComponent<Armor>();
             if (armor != null)
@@ -23,7 +35,7 @@ namespace JMGames.Scripts.Behaviours
             }
             else
             {
-                return GetComponent<Life>().DecreaseHealth(hitDamage);
+                return Life.DecreaseHealth(hitDamage);
             }
         }
 

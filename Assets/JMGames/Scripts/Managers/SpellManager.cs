@@ -126,10 +126,10 @@ public class SpellManager : JMBehaviour
                 spellInstance.transform.position = selectedAreaCenter;
             }
 
-            RFX4_TransformMotion[] transformMotions = spellInstance.GetComponentsInChildren<RFX4_TransformMotion>();
+            RFX4_TransformMotion[] transformMotions = spellInstance.GetComponentsInChildren<RFX4_TransformMotion>(true);
             if (transformMotions != null && transformMotions.Length > 0)
             {
-                transformMotions[0].CollisionEnter += SpellCollisionHandler;
+                transformMotions[0].CollisionEnter += ActiveSpell.HandleCollision;
             }
 
             RFX4_EffectEvent effectEvent = MainPlayerController.Instance.GetComponent<RFX4_EffectEvent>();
@@ -181,19 +181,6 @@ public class SpellManager : JMBehaviour
         }
     }
 
-    private void SpellCollisionHandler(object sender, RFX4_TransformMotion.RFX4_CollisionInfo e)
-    {
-        RFX4_TransformMotion transformMotion = (RFX4_TransformMotion)sender;
-        HitReceiver hitReceiver = e.Hit.transform.GetComponent<HitReceiver>();
-        if (hitReceiver != null)
-        {
-            BaseSpell spell = transformMotion.GetComponent<BaseSpell>();
-            HitInfo hitInfo = new HitInfo();
-            hitInfo.BaseDamage = spell.Damage;
-            hitReceiver.ReceiveHit(hitInfo);
-        }
-    }
-
     protected IEnumerator CastingCooldown()
     {
         //Gets stuck for not being called
@@ -238,7 +225,7 @@ public class SpellManager : JMBehaviour
         }
         else
         {
-            if(ActiveSpell != null && (ActiveSpell.Type != SpellTypeEnum.AOE || ActiveSpell.AOEType != AOETypeEnum.SelectedArea))
+            if (ActiveSpell != null && (ActiveSpell.Type != SpellTypeEnum.AOE || ActiveSpell.AOEType != AOETypeEnum.SelectedArea))
             {
                 ActiveSpell = null;
             }

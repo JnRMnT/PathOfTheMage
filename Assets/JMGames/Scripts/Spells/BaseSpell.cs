@@ -1,6 +1,7 @@
 ﻿using JMGames.Framework;
 using JMGames.Scripts.Behaviours;
 using JMGames.Scripts.Spells.Effects;
+using JMGames.Scripts.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -116,14 +117,19 @@ namespace JMGames.Scripts.Spells
             }
         }
         #endregion
-
-
-        public void HandleCollision(RaycastHit hit)
+        
+        public virtual void HandleCollision(object sender, RFX4_TransformMotion.RFX4_CollisionInfo e)
         {
-            HitReceiver hitReceiver = hit.transform.GetComponent<HitReceiver>();
+            HitReceiver hitReceiver = e.Hit.transform.GetComponent<HitReceiver>();
             if (hitReceiver != null)
             {
-                hitReceiver.ReceiveHit(GetHitInfo());
+                HitInfo hitInfo = GetHitInfo();
+                if(hitInfo.RelativeHitPoint.x == -2 && hitInfo.RelativeHitPoint.y == -2 && hitInfo.RelativeHitPoint.z == -2)
+                {
+                    //Calculate hit point
+                    hitInfo.RelativeHitPoint = GameObjectUtilities.FindPointRelativeToObject(e.Hit.point, e.Hit.transform.gameObject);
+                }
+                hitReceiver.ReceiveHit(hitInfo);
             }
         }
 
@@ -131,7 +137,8 @@ namespace JMGames.Scripts.Spells
         {
             return new HitInfo
             {
-                BaseDamage = Damage
+                BaseDamage = Damage,
+                RelativeHitPoint = new Vector3(-2, -2, -2)
             };
         }
     }

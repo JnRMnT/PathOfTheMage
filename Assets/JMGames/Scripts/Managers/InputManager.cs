@@ -1,5 +1,6 @@
 ﻿using Invector.CharacterController;
 using JMGames.Framework;
+using JMGames.Scripts.Constants;
 using JMGames.Scripts.ObjectControllers;
 using JMGames.Scripts.ObjectControllers.Character;
 using JMGames.Scripts.Spells;
@@ -54,7 +55,7 @@ namespace JMGames.Scripts.Managers
         public override void DoStart()
         {
             Instance = this;
-            LayerMaskExcludingPlayer = RaycastingUtilities.CreateLayerMask(true, LayerMask.NameToLayer("Player"));
+            LayerMaskExcludingPlayer = RaycastingUtilities.CreateLayerMask(true, LayerMask.NameToLayer(LayerConstants.Player));
             CharacterInit();
             base.DoStart();
         }
