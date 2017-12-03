@@ -39,8 +39,11 @@ namespace JMGames.Scripts.Managers
         [HideInInspector]
         public bool keepDirection;                          // keep the current direction in case you change the cameraState
 
-        protected vThirdPersonController cc;                // access the ThirdPersonController component       
+        protected vThirdPersonController cc;                // access the ThirdPersonController component  
+        [HideInInspector]
         public int LayerMaskExcludingPlayer;
+        [HideInInspector]
+        public int WorldLayerMask;
 
         public AreaSelector AreaSelector;
         public bool IsAreaSelectorActive
@@ -56,6 +59,7 @@ namespace JMGames.Scripts.Managers
         {
             Instance = this;
             LayerMaskExcludingPlayer = RaycastingUtilities.CreateLayerMask(true, LayerMask.NameToLayer(LayerConstants.Player));
+            WorldLayerMask = RaycastingUtilities.CreateLayerMask(false, LayerMask.NameToLayer(LayerConstants.World));
             CharacterInit();
             base.DoStart();
         }

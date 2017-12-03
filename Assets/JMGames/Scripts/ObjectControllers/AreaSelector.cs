@@ -11,7 +11,7 @@ namespace JMGames.Scripts.ObjectControllers
     public class AreaSelector : JMBehaviour
     {
         protected Vector3 InvalidPosition = new Vector3(-1500, -1500, -1500);
-        protected float InitialScaleFactor = 0.1f;
+        protected float InitialScaleFactor = 1f;
 
         public bool IsValid
         {
@@ -31,7 +31,7 @@ namespace JMGames.Scripts.ObjectControllers
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
-            if (Physics.Raycast(ray, out hit, 50f, InputManager.Instance.LayerMaskExcludingPlayer))
+            if (Physics.Raycast(ray, out hit, 50f, InputManager.Instance.WorldLayerMask))
             {
                 transform.position = hit.point + Vector3.up * 0.1f;
             }
