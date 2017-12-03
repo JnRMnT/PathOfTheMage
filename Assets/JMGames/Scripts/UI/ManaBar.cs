@@ -9,7 +9,10 @@ namespace JMGames.Scripts.UI
         public Image ManaImage;
         public override void DoUpdate()
         {
-            ManaImage.fillAmount = MainPlayerController.Instance.ManaPool.ManaFloatingPercentage;
+            if (MainPlayerController.Instance != null)
+            {
+                ManaImage.fillAmount = MainPlayerController.Instance.ManaPool.ManaFloatingPercentage;
+            }
             base.DoUpdate();
         }
     }

@@ -1,9 +1,0 @@
-﻿LVLCMPLT=Bölüm Tamamlandı
-RPLY=Tekrar Oyna
-NXTLVL=Sonraki Bölüm
-LVLLDNG=Bölüm Yükleniyor...
-GMPSD=Oyun Duraklatıldı
-CNTN=Devam Et
-RSTRT=Tekrar Başlat
-RTRNMNMNU=Ana Menüye Dön
-GMSTRTNG=Oyun Başlıyor...

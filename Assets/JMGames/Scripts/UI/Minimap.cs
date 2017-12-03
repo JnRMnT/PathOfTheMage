@@ -17,7 +17,10 @@ namespace JMGames.Scripts.UI
 
         public override void DoUpdate()
         {
-            MinimapCamera.transform.position = new Vector3(MainPlayerController.Instance.transform.position.x, MainPlayerController.Instance.transform.position.y + 20f, MainPlayerController.Instance.transform.position.z);
+            if (MainPlayerController.Instance != null)
+            {
+                MinimapCamera.transform.position = new Vector3(MainPlayerController.Instance.transform.position.x, MainPlayerController.Instance.transform.position.y + 20f, MainPlayerController.Instance.transform.position.z);
+            }
             base.DoUpdate();
         }
 
@@ -26,7 +29,7 @@ namespace JMGames.Scripts.UI
             if (ZoomAmount > 10)
             {
                 ZoomAmount -= 5f;
-                if(ZoomAmount < 10)
+                if (ZoomAmount < 10)
                 {
                     ZoomAmount = 10;
                 }

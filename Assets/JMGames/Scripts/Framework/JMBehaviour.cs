@@ -1,4 +1,5 @@
-﻿using System;
+﻿using JMGames.Scripts.Framework;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +20,7 @@ namespace JMGames.Framework
             catch (Exception e)
             {
                 //Exception Handling
-                Debug.LogException(e);
+                ExceptionHandler.HandleException(e);
             }
         }
 
@@ -32,13 +33,13 @@ namespace JMGames.Framework
             catch (Exception e)
             {
                 //Exception Handling
-                Debug.LogException(e);
+                ExceptionHandler.HandleException(e);
             }
         }
 
         void Start()
         {
-            if (false)//(!LanguageManager.Ready)
+            if (!LanguageManager.Ready)
             {
                 StartCoroutine(WaitForResources());
             }
@@ -57,7 +58,7 @@ namespace JMGames.Framework
             catch (Exception e)
             {
                 //Exception Handling
-                Debug.LogException(e);
+                ExceptionHandler.HandleException(e);
             }
         }
 
@@ -71,7 +72,7 @@ namespace JMGames.Framework
             catch (Exception e)
             {
                 //Exception Handling
-                Debug.LogException(e);
+                ExceptionHandler.HandleException(e);
             }
         }
 
@@ -85,7 +86,7 @@ namespace JMGames.Framework
             catch (Exception e)
             {
                 //Exception Handling
-                Debug.LogException(e);
+                ExceptionHandler.HandleException(e);
             }
         }
         #endregion
@@ -125,7 +126,7 @@ namespace JMGames.Framework
         private IEnumerator WaitForResources()
         {
             yield return null;
-            if (true)//(!(this is LanguageManager) && (!LanguageManager.Ready))
+            if (!(this is LanguageManager) && (!LanguageManager.Ready))
             {
                 yield return new WaitForSeconds(1f);
                 WaitForResources();
@@ -145,7 +146,7 @@ namespace JMGames.Framework
             catch (Exception e)
             {
                 //Exception Handling
-                Debug.LogException(e);
+                ExceptionHandler.HandleException(e);
             }
         }
     }

@@ -1656,6 +1656,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d86b8dff4f115c41af6c93803d8c178, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsImmortal: 0
   Life: {fileID: 114254852184402860}
   Animator: {fileID: 95837985987842782}
 --- !u!114 &114517918346882944

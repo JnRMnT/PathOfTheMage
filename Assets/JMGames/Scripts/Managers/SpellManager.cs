@@ -1,4 +1,5 @@
-﻿using JMGames.Framework;
+﻿using DuloGames.UI;
+using JMGames.Framework;
 using JMGames.Scripts.Behaviours;
 using JMGames.Scripts.ObjectControllers.Character;
 using JMGames.Scripts.Spells;
@@ -12,6 +13,7 @@ public class SpellManager : JMBehaviour
     public BaseCharacterController CharacterController;
 
     public BaseSpell[] AvailableSpells;
+
 
     private int activeSpellSlot = -1;
 
@@ -56,8 +58,10 @@ public class SpellManager : JMBehaviour
     protected void InitializeSpellSlots()
     {
         SpellSlots = new BaseSpell[10];
+        /*
         SpellSlots[0] = GetSpell("LightningBolt");
         SpellSlots[1] = GetSpell("WaterDragon");
+        */
     }
 
     public BaseSpell GetSpell(string name)
@@ -67,6 +71,23 @@ public class SpellManager : JMBehaviour
             foreach (BaseSpell availableSpell in AvailableSpells)
             {
                 if (availableSpell.Name.Equals(name))
+                {
+                    return availableSpell;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public BaseSpell GetSpell(int uid)
+    {
+
+        if (AvailableSpells != null)
+        {
+            foreach (BaseSpell availableSpell in AvailableSpells)
+            {
+                if (availableSpell.UIID == uid)
                 {
                     return availableSpell;
                 }
@@ -108,6 +129,8 @@ public class SpellManager : JMBehaviour
     {
         if (ActiveSpell != null && MainPlayerController.Instance.ManaPool.HasSufficientMana(ActiveSpell.ManaCost))
         {
+            UISpellSlot spellSlot = UISpellSlot.GetSlot(activeSpellSlot, UISpellSlot_Group.Main_1);
+            //spellSlot.
             GameObject spellInstance = GameObject.Instantiate(ActiveSpell.Prefab);
             spellInstance.transform.position = MainPlayerController.Instance.RightHand.transform.position + transform.forward * 0.5f + transform.up * -2f;
             spellInstance.transform.rotation = MainPlayerController.Instance.transform.rotation;

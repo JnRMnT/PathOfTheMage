@@ -36,6 +36,14 @@ namespace JMGames.Scripts.Spells
             }
         }
 
+        public override int UIID
+        {
+            get
+            {
+                return 2;
+            }
+        }
+
         public override SpellTypeEnum Type
         {
             get

@@ -1,9 +1,12 @@
-﻿using Invector.CharacterController;
+﻿using DuloGames.UI;
+using Invector.CharacterController;
 using JMGames.Framework;
 using JMGames.Scripts.Constants;
+using JMGames.Scripts.Entities;
 using JMGames.Scripts.ObjectControllers;
 using JMGames.Scripts.ObjectControllers.Character;
 using JMGames.Scripts.Spells;
+using JMGames.Scripts.UI.Window;
 using JMGames.Scripts.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
@@ -45,6 +48,7 @@ namespace JMGames.Scripts.Managers
         [HideInInspector]
         public int WorldLayerMask;
 
+        public UIWindow PauseMenu;
         public AreaSelector AreaSelector;
         public bool IsAreaSelectorActive
         {
@@ -107,23 +111,26 @@ namespace JMGames.Scripts.Managers
 
         protected virtual void InputHandle()
         {
-            ExitGameInput();
-            CameraInput();
-
-            if (!cc.lockMovement)
+            if (GameStateManager.Instance != null && GameStateManager.Instance.CurrentState == GameStateEnum.Playing)
             {
-                MoveCharacter();
-                SprintInput();
-                StrafeInput();
-                JumpInput();
-                if (cc.speed < 0.3f)
+                ExitGameInput();
+                CameraInput();
+
+                if (!cc.lockMovement)
                 {
-                    SpellInput();
-                    AOESelectionInput();
-                }
-                else
-                {
-                    MainPlayerController.Instance.StopAlignment();
+                    MoveCharacter();
+                    SprintInput();
+                    StrafeInput();
+                    JumpInput();
+                    if (cc.speed < 0.3f)
+                    {
+                        SpellInput();
+                        AOESelectionInput();
+                    }
+                    else
+                    {
+                        MainPlayerController.Instance.StopAlignment();
+                    }
                 }
             }
         }
@@ -161,13 +168,19 @@ namespace JMGames.Scripts.Managers
             // just a example to quit the application 
             if (Input.GetKeyDown(KeyCode.Escape))
             {
+                if (UIWindowManager.Instance != null && UIWindowManager.Instance.escapedUsed)
+                {
+                    return;
+                }
+
                 if (!Cursor.visible)
                 {
-                    Cursor.visible = true;
+                    UIManager.Instance.SetCursorVisibility(true);
                 }
                 else
                 {
                     //Show menu
+                    PauseMenuWindow.Instance.Pause();
                 }
             }
         }

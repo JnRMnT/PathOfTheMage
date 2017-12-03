@@ -9,7 +9,10 @@ namespace JMGames.Scripts.UI
         public Image HealthImage;
         public override void DoUpdate()
         {
-            HealthImage.fillAmount = MainPlayerController.Instance.Health.HealthFloatingPercentage;
+            if (MainPlayerController.Instance != null)
+            {
+                HealthImage.fillAmount = MainPlayerController.Instance.Health.HealthFloatingPercentage;
+            }
             base.DoUpdate();
         }
     }

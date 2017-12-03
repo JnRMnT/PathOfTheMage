@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4878238288989436}
   - component: {fileID: 114875622729267410}
   - component: {fileID: 114877064616059544}
+  - component: {fileID: 114901538574372446}
   m_Layer: 0
   m_Name: StaticScripts
   m_TagString: Untagged
@@ -66,3 +67,16 @@ MonoBehaviour:
   CursorTexture: {fileID: 2800000, guid: 2befc74d76bdbd04ca30d5ab0ba31fc0, type: 3}
   CursorMode: 0
   HotSpot: {x: 0, y: 0}
+--- !u!114 &114901538574372446
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1434300868992426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3528644128d31e46904ed7584442e43, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LocationType: 0
+  CurrentState: 0

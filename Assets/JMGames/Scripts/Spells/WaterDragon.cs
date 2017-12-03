@@ -72,6 +72,14 @@ namespace JMGames.Scripts.Spells
             }
         }
 
+        public override int UIID
+        {
+            get
+            {
+                return 1;
+            }
+        }
+
         public override void DoStart()
         {
             StartCoroutine(WaitForDragonToFall());

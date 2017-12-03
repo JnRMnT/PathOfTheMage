@@ -13,6 +13,14 @@ namespace JMGames.Scripts.Spells
     public class BaseSpell : JMBehaviour
     {
         #region Properties
+        public virtual int UIID
+        {
+            get
+            {
+                return 0;
+            }
+        }
+
         public virtual string Name
         {
             get
@@ -50,6 +58,14 @@ namespace JMGames.Scripts.Spells
             get
             {
                 return new Vector3(0, 20f, 0);
+            }
+        }
+
+        public virtual float Cooldown
+        {
+            get
+            {
+                return 0;
             }
         }
 
@@ -117,14 +133,14 @@ namespace JMGames.Scripts.Spells
             }
         }
         #endregion
-        
+
         public virtual void HandleCollision(object sender, RFX4_TransformMotion.RFX4_CollisionInfo e)
         {
             HitReceiver hitReceiver = e.Hit.transform.GetComponent<HitReceiver>();
             if (hitReceiver != null)
             {
                 HitInfo hitInfo = GetHitInfo();
-                if(hitInfo.RelativeHitPoint.x == -2 && hitInfo.RelativeHitPoint.y == -2 && hitInfo.RelativeHitPoint.z == -2)
+                if (hitInfo.RelativeHitPoint.x == -2 && hitInfo.RelativeHitPoint.y == -2 && hitInfo.RelativeHitPoint.z == -2)
                 {
                     //Calculate hit point
                     hitInfo.RelativeHitPoint = GameObjectUtilities.FindPointRelativeToObject(e.Hit.point, e.Hit.transform.gameObject);
