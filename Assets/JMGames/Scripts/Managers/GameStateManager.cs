@@ -22,13 +22,17 @@ namespace JMGames.Scripts.Managers
         {
             //TODO:Initialize state based on scene here
             Scene scene = SceneManager.GetActiveScene();
-            if (scene.name == "")
+            if (scene.name == "Outdoor")
             {
-
+                LocationType = LocationTypeEnum.Outdoor;
+                CurrentState = GameStateEnum.Playing;
+            }
+            else
+            {
+                LocationType = LocationTypeEnum.Testing;
+                CurrentState = GameStateEnum.Playing;
             }
 
-            LocationType = LocationTypeEnum.Testing;
-            CurrentState = GameStateEnum.Playing;
 
             EnviroSkyRendering skyRendering = Camera.main.GetComponent<EnviroSkyRendering>();
             if (LocationType != LocationTypeEnum.Outdoor)

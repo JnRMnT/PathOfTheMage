@@ -13,7 +13,7 @@ public class SpellManager : JMBehaviour
     public BaseCharacterController CharacterController;
 
     public BaseSpell[] AvailableSpells;
-
+    public UICastBar UICastBar;
 
     private int activeSpellSlot = -1;
 
@@ -35,6 +35,36 @@ public class SpellManager : JMBehaviour
             if (value == null)
             {
                 activeSpellSlot = -1;
+            }
+        }
+    }
+
+    public UISpellSlot ActiveUISpellSlot
+    {
+        get
+        {
+            if (ActiveSpell != null)
+            {
+                return UISpellSlot.GetSlot(activeSpellSlot + 1, UISpellSlot_Group.Main_1);
+            }
+            else
+            {
+                return null;
+            }
+        }
+    }
+
+    public UISpellInfo ActiveUISpellInfo
+    {
+        get
+        {
+            if (ActiveUISpellSlot != null)
+            {
+                return ActiveUISpellSlot.GetSpellInfo();
+            }
+            else
+            {
+                return null;
             }
         }
     }
@@ -97,6 +127,27 @@ public class SpellManager : JMBehaviour
         return null;
     }
 
+    private void HandleCooldown()
+    {
+        // Handle cooldown just for the demonstration
+        if (ActiveUISpellSlot.cooldownComponent != null && ActiveUISpellInfo.Cooldown > 0f)
+        {
+            // Start the cooldown on all the slots with the specified spell id
+            foreach (UISpellSlot s in UISpellSlot.GetSlots())
+            {
+                if (s.IsAssigned() && s.GetSpellInfo() != null && s.cooldownComponent != null)
+                {
+                    // If the slot IDs match
+                    if (s.GetSpellInfo().ID == ActiveUISpellInfo.ID)
+                    {
+                        // Start the cooldown
+                        s.cooldownComponent.StartCooldown(ActiveUISpellInfo.ID, ActiveUISpellInfo.Cooldown);
+                    }
+                }
+            }
+        }
+    }
+
     public void CastSpell(int spellSlot)
     {
         if (SpellSlots[spellSlot] != null && !HasActiveSpell)
@@ -114,6 +165,18 @@ public class SpellManager : JMBehaviour
         }
     }
 
+    protected bool IsInCooldown()
+    {
+        if (ActiveUISpellInfo.Cooldown > 0f && ActiveUISpellSlot.cooldownComponent != null && ActiveUISpellSlot.cooldownComponent.IsOnCooldown)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     private string GetRandomSpellTriggerName()
     {
         if (activeSpellSlot != -1 && SpellSlots[activeSpellSlot] != null)
@@ -127,10 +190,10 @@ public class SpellManager : JMBehaviour
 
     public void DoCast(Vector3 selectedAreaCenter)
     {
-        if (ActiveSpell != null && MainPlayerController.Instance.ManaPool.HasSufficientMana(ActiveSpell.ManaCost))
+        if (ActiveSpell != null && MainPlayerController.Instance.ManaPool.HasSufficientMana(ActiveSpell.ManaCost) && !IsInCooldown())
         {
-            UISpellSlot spellSlot = UISpellSlot.GetSlot(activeSpellSlot, UISpellSlot_Group.Main_1);
-            //spellSlot.
+            UICastBar.StartCasting(ActiveUISpellInfo, ActiveUISpellInfo.CastTime, Time.time + ActiveUISpellInfo.CastTime);
+            HandleCooldown();
             GameObject spellInstance = GameObject.Instantiate(ActiveSpell.Prefab);
             spellInstance.transform.position = MainPlayerController.Instance.RightHand.transform.position + transform.forward * 0.5f + transform.up * -2f;
             spellInstance.transform.rotation = MainPlayerController.Instance.transform.rotation;
@@ -196,7 +259,7 @@ public class SpellManager : JMBehaviour
 
             spellInstance.SetActive(true);
             MainPlayerController.Instance.ManaPool.UseMana(ActiveSpell.ManaCost);
-            StartCoroutine(CastingCooldown());
+            StartCoroutine(RecastCooldown());
         }
         else
         {
@@ -204,7 +267,7 @@ public class SpellManager : JMBehaviour
         }
     }
 
-    protected IEnumerator CastingCooldown()
+    protected IEnumerator RecastCooldown()
     {
         //Gets stuck for not being called
         yield return new WaitForSecondsRealtime(0.5f);

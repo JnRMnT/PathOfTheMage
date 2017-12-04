@@ -101,6 +101,14 @@ namespace JMGames.Scripts.Spells
             }
         }
 
+        public virtual float CastTime
+        {
+            get
+            {
+                return 1.5f;
+            }
+        }
+
         public virtual float Damage
         {
             get

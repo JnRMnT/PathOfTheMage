@@ -21,6 +21,7 @@ namespace JMGames.Scripts.UI.SpellBook
             uiSpell.Cooldown = spell.Cooldown;
             uiSpell.PowerCost = spell.ManaCost;
             uiSpell.Range = spell.MaxCastDistance;
+            uiSpell.CastTime = spell.CastTime;
 
             if (this.m_Slot != null) this.m_Slot.Assign(uiSpell);
             if (this.m_NameText != null) this.m_NameText.text = LanguageManager.GetString("SPELL_" + spell.Name);
