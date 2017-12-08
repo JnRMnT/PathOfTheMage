@@ -1,5 +1,6 @@
 ﻿using JMGames.Framework;
 using JMGames.Scripts.Behaviours;
+using JMGames.Scripts.Behaviours.Actions;
 using JMGames.Scripts.Constants;
 using JMGames.Scripts.Utilities;
 using System.Collections;
@@ -15,6 +16,7 @@ namespace JMGames.Scripts.ObjectControllers.Character
         public NavMeshAgent NavMeshAgent;
         private Transform currentTarget;
         protected bool checkHit = false;
+        private BattleCryBehaviour BattleCryBehaviour;
 
         /// <summary>
         ///  Vector3 position used to override animation root transform
@@ -25,6 +27,12 @@ namespace JMGames.Scripts.ObjectControllers.Character
         {
             transform.position = lastPosition;
             base.DoLateUpdate();
+        }
+
+        public override void DoStart()
+        {
+            BattleCryBehaviour = GetComponent<BattleCryBehaviour>();
+            base.DoStart();
         }
 
         public override void DoUpdate()
@@ -93,10 +101,29 @@ namespace JMGames.Scripts.ObjectControllers.Character
             Collider[] players = Physics.OverlapSphere(transform.position, AIConstants.EnemyCheckRadius, RaycastingUtilities.CreateLayerMask(false, LayerMask.NameToLayer(LayerConstants.Player)));
             if (players != null && players.Length > 0)
             {
-                Collider player = GetTargetPlayer(players);
-                NavMeshAgent.SetDestination(player.transform.position);
-                currentTarget = player.transform;
+                if (BattleCryBehaviour != null)
+                {
+                    if (!BattleCryBehaviour.IsCompleted && !BattleCryBehaviour.IsActive)
+                    {
+                        BattleCryBehaviour.Play(this);
+                    }
+                    else if(BattleCryBehaviour.IsCompleted)
+                    {
+                        MoveTowardsAPlayer(players);
+                    }
+                }
+                else
+                {
+                    MoveTowardsAPlayer(players);
+                }
             }
+        }
+
+        private void MoveTowardsAPlayer(Collider[] players)
+        {
+            Collider player = GetTargetPlayer(players);
+            NavMeshAgent.SetDestination(player.transform.position);
+            currentTarget = player.transform;
         }
 
         protected virtual bool IsPlayerInRange()

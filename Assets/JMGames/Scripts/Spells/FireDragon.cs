@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace JMGames.Scripts.Spells
 {
-    public class WaterDragon : AOESpell
+    public class FireDragon : AOESpell
     {
         public override string[] AnimationTriggerNames
         {
@@ -36,7 +36,7 @@ namespace JMGames.Scripts.Spells
         {
             get
             {
-                return "WaterDragon";
+                return "FireDragon";
             }
         }
         
@@ -52,7 +52,7 @@ namespace JMGames.Scripts.Spells
         {
             get
             {
-                return 1f;
+                return 2.5f;
             }
         }
 
@@ -60,7 +60,7 @@ namespace JMGames.Scripts.Spells
         {
             get
             {
-                return new Type[] { typeof(SlowEffect) };
+                return new Type[] { typeof(FireEffect) };
             }
         }
 
@@ -76,7 +76,7 @@ namespace JMGames.Scripts.Spells
         {
             get
             {
-                return 1;
+                return 3;
             }
         }
 
@@ -88,7 +88,7 @@ namespace JMGames.Scripts.Spells
 
         protected IEnumerator WaitForDragonToFall()
         {
-            yield return new WaitForSeconds(4.15f);
+            yield return new WaitForSeconds(5.6f);
             GiveDamage();
         }
     }

@@ -15,7 +15,7 @@ namespace JMGames.Scripts.Spells
 
         public void GiveDamage()
         {
-            Collider[] hitColliders = Physics.OverlapSphere(transform.position + Vector3.up * 0.1f, AOERadius);
+            Collider[] hitColliders = Physics.OverlapSphere(transform.position, AOERadius);
             if (hitColliders != null)
             {
                 foreach (Collider hitCollider in hitColliders)

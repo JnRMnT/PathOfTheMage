@@ -10,10 +10,13 @@ namespace JMGames.Scripts.Constants
         public const string VelocityParameter = "Velocity";
         public const string RandomHitParameter = "RandomHit";
         public const int EnemyHitLayer = 2;
+        public const int EnemyBaseLayer = 0;
         public const string EmptyStateName = "Empty";
         public const string TakeHitTriggerName = "TakeHit";
         public const string ReceivedHitXParameter = "ReceivedHitX";
         public const string ReceivedHitYParameter = "ReceivedHitY";
         public const string DieTrigger = "Die";
+        public const string BattleCryTrigger = "BattleCry";
+        public const string BattleCryStateName = "Battle Cry";
     }
 }

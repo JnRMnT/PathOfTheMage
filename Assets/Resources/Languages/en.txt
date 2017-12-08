@@ -1,0 +1,17 @@
+UI_EXIT=EXIT GAME
+UI_EXIT_INNER=EXIT
+UI_EXIT_QUESTION=Do you really want to exit the game?
+UI_EXIT_DECRIPTION=All of your unsaved progress will be lost.
+UI_BACKTOMENU=MAIN MENU
+UI_RESUME=RESUME
+UI_SETTINGS=SETTINGS
+UI_RANK=Rank
+SPELL_WATERDRAGON=Water Dragon
+DESCRIPTION_WATERDRAGON=A water dragon emerges from the ground and stomps it damaging the surrounding enemies.
+SPELL_FIREDRAGON=Fire Dragon
+DESCRIPTION_FIREDRAGON=A fire dragon emerges from the ground and stomps it damaging the surrounding enemies.
+SPELL_LIGHTNINGBOLT=Lightning Bolt
+DESCRIPTION_LIGHTNINGBOLT=A wave of ligtning bolt follows a linear path and hits a single enemy.
+UI_SPELLBOOK=SPELL BOOK
+UI_SPELLS=SPELLS
+UI_TALENTS=TALENTS

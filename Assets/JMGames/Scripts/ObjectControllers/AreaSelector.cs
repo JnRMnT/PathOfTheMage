@@ -43,7 +43,21 @@ namespace JMGames.Scripts.ObjectControllers
 
         public void Initialize(float radius)
         {
-            this.transform.localScale = new Vector3(radius * InitialScaleFactor, radius * InitialScaleFactor, InitialScaleFactor);
+            List<float> yPositions = new List<float>();
+            foreach (Transform child in transform)
+            {
+                yPositions.Add(child.position.y);
+            }
+            this.transform.localScale = new Vector3(radius * InitialScaleFactor, radius * InitialScaleFactor, radius * InitialScaleFactor);
+            int i = 0;
+            foreach (Transform child in transform)
+            {
+                child.position = new Vector3(child.position.x, yPositions[i], child.position.z);
+                i++;
+            }
+
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.lockState = CursorLockMode.Locked;
         }
     }
 }

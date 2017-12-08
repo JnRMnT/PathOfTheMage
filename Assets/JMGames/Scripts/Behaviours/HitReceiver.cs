@@ -8,7 +8,6 @@ using UnityEngine.AI;
 
 namespace JMGames.Scripts.Behaviours
 {
-    [RequireComponent(typeof(Life), typeof(Animator))]
     public class HitReceiver : JMBehaviour
     {
         public bool IsImmortal = false;
@@ -16,8 +15,14 @@ namespace JMGames.Scripts.Behaviours
         public Animator Animator;
         public override void DoStart()
         {
-            Life = GetComponent<Life>();
-            Animator = GetComponent<Animator>();
+            if (Life == null)
+            {
+                Life = GetComponent<Life>();
+            }
+            if (Animator == null)
+            {
+                Animator = GetComponent<Animator>();
+            }
             base.DoStart();
         }
 

@@ -133,7 +133,7 @@ namespace JMGames.Scripts.Spells
             }
         }
 
-        public virtual Type Effect
+        public virtual Type[] Effects
         {
             get
             {

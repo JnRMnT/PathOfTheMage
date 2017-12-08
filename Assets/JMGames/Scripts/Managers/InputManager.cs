@@ -201,9 +201,13 @@ namespace JMGames.Scripts.Managers
 
         protected virtual void AOESelectionInput()
         {
-            if (IsAreaSelectorActive && Input.GetKeyDown(KeyCode.Mouse0) && AreaSelector.IsValid)
+            if (IsAreaSelectorActive && Input.GetKeyDown(KeyCode.Mouse0))
             {
-                if (SpellManager.Instance.TriggerAnimationAndCast(AreaSelector.transform.position))
+                if (!AreaSelector.IsValid)
+                {
+                    AreaSelector.gameObject.SetActive(false);
+                }
+                else if (SpellManager.Instance.TriggerAnimationAndCast(AreaSelector.transform.position))
                 {
                     AreaSelector.gameObject.SetActive(false);
                 }

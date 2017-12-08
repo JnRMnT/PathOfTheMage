@@ -14,5 +14,13 @@ namespace JMGames.Scripts.Spells.Effects
                 return string.Empty;
             }
         }
+
+        public virtual SpellEffectTiming Timing
+        {
+            get
+            {
+                return SpellEffectTiming.After;
+            }
+        }
     }
 }

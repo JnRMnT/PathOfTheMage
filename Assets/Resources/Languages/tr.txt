@@ -1,0 +1,17 @@
+﻿UI_EXIT=OYUNDAN ÇIK
+UI_EXIT_INNER=ÇIK
+UI_EXIT_QUESTION=Oyundan çıkmak istediğinizden emin misiniz?
+UI_EXIT_DECRIPTION=Kaydedilmemiş tüm ilerlemeniz kaybolacaktır.
+UI_BACKTOMENU=ANA MENÜ
+UI_RESUME=DEVAM ET
+UI_SETTINGS=AYARLAR
+UI_RANK=Seviye
+SPELL_WATERDRAGON=Su Ejderhası
+DESCRIPTION_WATERDRAGON=Yerden bir su ejderhası belirir ve yere çakılarak etrafındaki düşmanlara zarar verir.
+SPELL_FIREDRAGON=Ateş Ejderhası
+DESCRIPTION_FIREDRAGON=Yerden bir ateş ejderhası belirir ve yere çakılarak etrafındaki düşmanlara zarar verir.
+SPELL_LIGHTNINGBOLT=Yıldırım
+DESCRIPTION_LIGHTNINGBOLT=Bir yıldırım dalgası çizgi halinde ilerler ve tek bir düşmana hasar verir.
+UI_SPELLBOOK=BÜYÜ KİTABI
+UI_SPELLS=BÜYÜLER
+UI_TALENTS=YETENEKLER
