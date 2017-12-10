@@ -64,7 +64,7 @@ namespace JMGames.Scripts.Managers
             Instance = this;
             LayerMaskExcludingPlayer = RaycastingUtilities.CreateLayerMask(true, LayerMask.NameToLayer(LayerConstants.Player));
             WorldLayerMask = RaycastingUtilities.CreateLayerMask(false, LayerMask.NameToLayer(LayerConstants.World));
-            CharacterInit();
+            CharacterInit();            
             base.DoStart();
         }
 
@@ -126,6 +126,7 @@ namespace JMGames.Scripts.Managers
                     {
                         SpellInput();
                         AOESelectionInput();
+                        InteractionInput();
                     }
                     else
                     {
@@ -186,8 +187,17 @@ namespace JMGames.Scripts.Managers
         }
 
         #endregion
+        #region Action Inputs
+        private void InteractionInput()
+        {
+            if (UIManager.Instance.InteractionText.isActiveAndEnabled && Input.GetButton(InputConstants.InteractionKey))
+            {
+                UIManager.Instance.InteractionText.Interact();
+            }
+        }
+        #endregion
         #region Spell Inputs
-        protected virtual void SpellInput()
+        private void SpellInput()
         {
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
@@ -196,6 +206,46 @@ namespace JMGames.Scripts.Managers
             else if (Input.GetKeyDown(KeyCode.Alpha2))
             {
                 SpellManager.Instance.CastSpell(1);
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha3))
+            {
+                SpellManager.Instance.CastSpell(2);
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha4))
+            {
+                SpellManager.Instance.CastSpell(3);
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha5))
+            {
+                SpellManager.Instance.CastSpell(4);
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha6))
+            {
+                SpellManager.Instance.CastSpell(5);
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha7))
+            {
+                SpellManager.Instance.CastSpell(6);
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha8))
+            {
+                SpellManager.Instance.CastSpell(7);
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha9))
+            {
+                SpellManager.Instance.CastSpell(8);
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha0))
+            {
+                SpellManager.Instance.CastSpell(9);
+            }
+            else if (Input.GetKeyDown(KeyCode.BackQuote))
+            {
+                SpellManager.Instance.CastSpell(10);
+            }
+            else if (Input.GetKeyDown(KeyCode.Minus))
+            {
+                SpellManager.Instance.CastSpell(11);
             }
         }
 

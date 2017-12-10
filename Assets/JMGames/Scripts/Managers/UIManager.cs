@@ -1,5 +1,6 @@
 ﻿using DuloGames.UI;
 using JMGames.Framework;
+using JMGames.Scripts.UI;
 using JMGames.Scripts.UI.Window;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,6 +9,7 @@ namespace JMGames.Scripts.Managers
 {
     public class UIManager : JMBehaviour
     {
+        public InteractionText InteractionText;
         public static UIManager Instance;
         public Texture2D CursorTexture;
         public CursorMode CursorMode = CursorMode.Auto;
@@ -15,13 +17,13 @@ namespace JMGames.Scripts.Managers
         public override void DoStart()
         {
             Instance = this;
-            Cursor.SetCursor(CursorTexture, HotSpot, CursorMode);
+            //Cursor.SetCursor(CursorTexture, HotSpot, CursorMode);
             base.DoStart();
         }
 
         public void OnApplicationFocus(bool focus)
         {
-            if (!focus)
+            if (!focus && PauseMenuWindow.Instance != null)
             {
                 Cursor.visible = true;
                 PauseMenuWindow.Instance.Pause();
