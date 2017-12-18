@@ -84,8 +84,8 @@ namespace JMGames.Scripts.Behaviours
                 rigidbody.useGravity = false;
                 rigidbody.isKinematic = true;
             }
-
-            this.SendMessage("Die", this, SendMessageOptions.DontRequireReceiver);
+            
+            this.SendMessageUpwards("Die", this, SendMessageOptions.DontRequireReceiver);
             DestroyDeadCharacter deadCharacterComponent = this.gameObject.AddComponent<DestroyDeadCharacter>();
         }
 

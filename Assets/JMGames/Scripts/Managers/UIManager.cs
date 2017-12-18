@@ -4,6 +4,7 @@ using JMGames.Scripts.UI;
 using JMGames.Scripts.UI.Window;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace JMGames.Scripts.Managers
 {
@@ -14,6 +15,8 @@ namespace JMGames.Scripts.Managers
         public Texture2D CursorTexture;
         public CursorMode CursorMode = CursorMode.Auto;
         public Vector2 HotSpot = Vector2.zero;
+        public NotificationText NotificationText;
+
         public override void DoStart()
         {
             Instance = this;
@@ -55,7 +58,7 @@ namespace JMGames.Scripts.Managers
         public bool HasActiveWindows()
         {
             List<UIWindow> windows = UIWindow.GetWindows();
-            foreach(UIWindow window in windows)
+            foreach (UIWindow window in windows)
             {
                 if (window.IsVisible)
                 {
@@ -64,6 +67,11 @@ namespace JMGames.Scripts.Managers
             }
 
             return false;
+        }
+
+        public void ShowNotification(string title, string text)
+        {
+            NotificationText.ShowNotification(title, text);
         }
     }
 }

@@ -17,6 +17,7 @@ namespace JMGames.Scripts.ObjectControllers.Character
         private Transform currentTarget;
         protected bool checkHit = false;
         private BattleCryBehaviour BattleCryBehaviour;
+        public bool IsDead = false;
 
         /// <summary>
         ///  Vector3 position used to override animation root transform
@@ -66,7 +67,15 @@ namespace JMGames.Scripts.ObjectControllers.Character
 
         public virtual void Die()
         {
-            Animator.SetFloat(AnimationConstants.RandomHitParameter, 0);
+            if (!IsDead)
+            {
+                IsDead = true;
+                if (this is IRewardGiver)
+                {
+                    RewardsHelper.GiveRewards(((IRewardGiver)this).GiveRewards(), MainPlayerController.Instance);
+                }
+                Animator.SetFloat(AnimationConstants.RandomHitParameter, 0);
+            }
         }
 
         protected IEnumerator EnableCheckHit()
@@ -107,7 +116,7 @@ namespace JMGames.Scripts.ObjectControllers.Character
                     {
                         BattleCryBehaviour.Play(this);
                     }
-                    else if(BattleCryBehaviour.IsCompleted)
+                    else if (BattleCryBehaviour.IsCompleted)
                     {
                         MoveTowardsAPlayer(players);
                     }

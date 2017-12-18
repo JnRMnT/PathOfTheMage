@@ -1,4 +1,5 @@
 ﻿using JMGames.Framework;
+using JMGames.Scripts.ObjectControllers.Character;
 using JMGames.Scripts.UI;
 using System.Collections;
 using UnityEngine;
@@ -18,7 +19,6 @@ public class Experience : JMBehaviour
     {
         yield return new WaitUntil(() => { return ExperienceBar.Instance != null; });
         ExperienceBar.Instance.UpdateBar(FloatingExperiencePercentage);
-        GainExperience(5200);
     }
 
     public float FloatingExperiencePercentage
@@ -44,9 +44,9 @@ public class Experience : JMBehaviour
 
     public void GainExperience(int amount)
     {
-        while (amount >= RequiredExpToLevelUp)
+        while (CurrentExperience + amount >= RequiredExpToLevelUp)
         {
-            amount = (int)(amount - RequiredExpToLevelUp);
+            amount = (int)(amount - (RequiredExpToLevelUp - CurrentExperience));
             LevelUp();
         }
 
@@ -59,5 +59,9 @@ public class Experience : JMBehaviour
         CurrentLevel++;
         CurrentExperience = 0;
         requiredExpToLevelUp = -1;
+        if (transform.GetComponent<MainPlayerController>() != null && LevelUpText.Instance != null)
+        {
+            LevelUpText.Instance.Show();
+        }
     }
 }
