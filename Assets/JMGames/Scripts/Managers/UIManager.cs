@@ -55,12 +55,12 @@ namespace JMGames.Scripts.Managers
             }
         }
 
-        public bool HasActiveWindows()
+        public bool HasActiveWindows(UIWindowID excludedWindow)
         {
             List<UIWindow> windows = UIWindow.GetWindows();
             foreach (UIWindow window in windows)
             {
-                if (window.IsVisible)
+                if (window.ID != excludedWindow && window.IsVisible)
                 {
                     return true;
                 }

@@ -166,15 +166,15 @@ namespace JMGames.Scripts.Managers
 
         protected virtual void ExitGameInput()
         {
-            // just a example to quit the application 
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 if (UIWindowManager.Instance != null && UIWindowManager.Instance.escapedUsed)
                 {
+                    UIManager.Instance.SetCursorVisibility(false);
                     return;
                 }
 
-                if (!Cursor.visible)
+                if (!Cursor.visible || Cursor.lockState == CursorLockMode.Locked)
                 {
                     UIManager.Instance.SetCursorVisibility(true);
                 }
@@ -190,7 +190,8 @@ namespace JMGames.Scripts.Managers
         #region Action Inputs
         private void InteractionInput()
         {
-            if (UIManager.Instance.InteractionText.isActiveAndEnabled && Input.GetButton(InputConstants.InteractionKey))
+            if (UIManager.Instance != null && UIManager.Instance.InteractionText != null 
+                && UIManager.Instance.InteractionText.isActiveAndEnabled && Input.GetButton(InputConstants.InteractionKey))
             {
                 UIManager.Instance.InteractionText.Interact();
             }
