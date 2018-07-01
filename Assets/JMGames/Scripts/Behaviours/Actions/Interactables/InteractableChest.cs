@@ -10,7 +10,13 @@ namespace JMGames.Scripts.Behaviours.Actions.Interactables
         private int LidDirection = 1;
         public Transform Lid;
         private Vector3 rotation;
-        
+
+        public override void DoStart()
+        {
+            InverseZ = true;
+            base.DoStart();
+        }
+
         protected override void OnInteractionReady()
         {
             GetComponent<AudioSource>().Play();

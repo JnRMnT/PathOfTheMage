@@ -1,4 +1,5 @@
-﻿using JMGames.Framework;
+﻿using JMGames.Common;
+using JMGames.Framework;
 using JMGames.Scripts.Entities;
 using JMGames.Scripts.ObjectControllers.Character;
 using UnityEngine;
@@ -11,11 +12,23 @@ namespace JMGames.Scripts.Managers
         public LocationTypeEnum LocationType;
         public GameStateEnum CurrentState;
         public static GameStateManager Instance;
+        public static int? Seed;
 
         public void Start()
         {
             Instance = this;
             InitializeState();
+            InitializeInternalSettings();
+        }
+
+        private void InitializeInternalSettings()
+        {
+            if (Seed != null)
+            {
+                GlobalSettings.Seed = (int)Seed;
+                Random.InitState((int)Seed);
+            }
+            GlobalSettings.GetResourceValue = LanguageManager.GetString;
         }
 
         private void InitializeState()

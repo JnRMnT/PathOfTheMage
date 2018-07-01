@@ -7,7 +7,8 @@ namespace JMGames.Scripts.UI
     {
         public override void DoUpdate()
         {
-            if (MainPlayerController.Instance.ActiveInteractable != null && !MainPlayerController.Instance.ActiveInteractable.IsCharacterLookingAtMe())
+            if (MainPlayerController.Instance.ActiveInteractable != null &&
+                (!MainPlayerController.Instance.ActiveInteractable.IsCharacterLookingAtMe()) || !MainPlayerController.Instance.ActiveInteractable.IsCharacterCloseEnough())
             {
                 MainPlayerController.Instance.ActiveInteractable = null;
                 Deactivate();

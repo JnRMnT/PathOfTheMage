@@ -73,5 +73,14 @@ namespace JMGames.Scripts.Managers
         {
             NotificationText.ShowNotification(title, text);
         }
+
+        public void HideWindow(UIWindow window)
+        {
+            window.Hide();
+            if (!UIManager.Instance.HasActiveWindows(window.ID))
+            {
+                UIManager.Instance.SetCursorVisibility(false);
+            }
+        }
     }
 }

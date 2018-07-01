@@ -13,6 +13,9 @@ namespace JMGames.Scripts.Behaviours.Actions
         public bool HasBeenInteracted = false;
         public bool CanBeReInteracted = false;
         public BaseCharacterController TrackedCharacter;
+
+        public bool InverseX = false, InverseY = false, InverseZ = false;
+
         public override void DoStart()
         {
             if (TrackedCharacter == null)
@@ -40,7 +43,7 @@ namespace JMGames.Scripts.Behaviours.Actions
             base.DoUpdate();
         }
 
-        protected virtual bool IsCharacterCloseEnough()
+        public virtual bool IsCharacterCloseEnough()
         {
             return Vector3.Distance(TrackedCharacter.transform.position, transform.position) <= InteractionDistance;
         }
@@ -49,12 +52,27 @@ namespace JMGames.Scripts.Behaviours.Actions
         {
             if (TrackedCharacter is MainPlayerController)
             {
-                return (transform.forward - Camera.main.transform.forward).magnitude < 1.05f;
+                Vector3 cameraForward = Camera.main.transform.forward;
+                Vector3 transformForward = transform.forward;
+                if (InverseX)
+                {
+                    transformForward.x *= -1;
+                }
+                if (InverseY)
+                {
+                    transformForward.y *= -1;
+                }
+                if (InverseZ)
+                {
+                    transformForward.z *= -1;
+                }
+                Vector3 lookVector = transformForward + cameraForward;
+                return lookVector.magnitude < 1.05f;
             }
             else
             {
                 return true;
-            } 
+            }
         }
 
         public virtual IEnumerator StartInteraction()

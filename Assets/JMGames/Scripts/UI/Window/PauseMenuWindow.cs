@@ -34,7 +34,7 @@ namespace JMGames.Scripts.UI.Window
         {
             Time.timeScale = 1;
             GameStateManager.Instance.CurrentState = GameStateEnum.Playing;
-            if (!UIManager.Instance.HasActiveWindows())
+            if (!UIManager.Instance.HasActiveWindows(window.ID))
             {
                 UIManager.Instance.SetCursorVisibility(false);
             }
