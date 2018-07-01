@@ -8,6 +8,9 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/JMGames/Scenes/Outdoor.unity
     guid: c23efdaf2198f5146bf8142175afd1ad
-  - enabled: 1
+  - enabled: 0
     path: Assets/JMGames/Scenes/SpellTests.unity
     guid: 5d18214d37517824284e195297565b7c
+  - enabled: 1
+    path: Assets/JMGames/Scenes/Testscene 2.unity
+    guid: 113a96f6f4f0d5a4a8049196efedd1df
