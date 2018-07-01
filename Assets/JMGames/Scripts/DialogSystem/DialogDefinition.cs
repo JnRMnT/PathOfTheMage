@@ -28,6 +28,7 @@ namespace JMGames.Scripts.DialogSystem
             set
             {
                 item = value;
+                InternalType = value.GetType();
             }
         }
     }

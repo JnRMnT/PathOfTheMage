@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using JMGames.Framework;
 using UnityEngine;
 
@@ -64,6 +65,17 @@ namespace JMGames.Scripts.Utilities
             {
                 collider.enabled = false;
             }
+        }
+
+        public static List<Transform> GetAllChildren(Transform parent)
+        {
+            List<Transform> children = new List<Transform>();
+            foreach(Transform child in parent)
+            {
+                children.Add(child);
+            }
+
+            return children;
         }
     }
 }

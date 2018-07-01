@@ -11,6 +11,7 @@ using UnityEngine;
 
 namespace JMGames.Scripts.EditorScripts
 {
+#if UNITY_EDITOR
     [CustomPropertyDrawer(typeof(DialogItemDefinition))]
     [CustomPropertyDrawer(typeof(DialogDefinition))]
     public class JMDialogsPropertyDrawer : PropertyDrawer
@@ -59,7 +60,7 @@ namespace JMGames.Scripts.EditorScripts
                 Type selectedType = typeFieldInfo.GetValue(property.objectReferenceValue) as Type;
                 if (selectedType != null)
                 {
-                    selectedIndex = availableTypes.FindIndex(e => e.FullName == selectedType.FullName);
+                    selectedIndex = availableTypes.FindIndex(e => e != null && e.FullName == selectedType.FullName);
                 }
             }
 
@@ -82,4 +83,5 @@ namespace JMGames.Scripts.EditorScripts
             EditorGUI.EndProperty();
         }
     }
+#endif
 }

@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace JMGames.Scripts.EditorScripts
 {
+#if UNITY_EDITOR
     public class EnumFlagsAttribute : PropertyAttribute
     {
         public EnumFlagsAttribute() { }
@@ -22,4 +23,5 @@ namespace JMGames.Scripts.EditorScripts
             }
         }
     }
+#endif
 }

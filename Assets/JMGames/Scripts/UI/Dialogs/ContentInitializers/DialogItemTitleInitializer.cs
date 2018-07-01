@@ -15,6 +15,7 @@ namespace JMGames.Scripts.UI.Dialogs.ContentInitializers
             if (!string.IsNullOrEmpty(item.Definition.Item.Title))
             {
                 GetComponent<Text>().text = item.Definition.Item.Title;
+                transform.parent.gameObject.SetActive(true);
             }
             else
             {

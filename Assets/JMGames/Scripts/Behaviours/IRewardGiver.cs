@@ -1,4 +1,4 @@
-﻿using JMGames.Scripts.Entities;
+﻿using JMGames.Common.Entities;
 using JMGames.Scripts.ObjectControllers.Character;
 using System;
 using System.Collections.Generic;

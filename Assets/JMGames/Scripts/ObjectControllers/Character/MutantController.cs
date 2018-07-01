@@ -1,6 +1,6 @@
 ﻿using JMGames.Scripts.Behaviours;
 using JMGames.Scripts.Behaviours.Actions;
-using JMGames.Scripts.Entities;
+using JMGames.Common.Entities;
 using JMGames.Scripts.Utilities;
 using UnityEngine;
 

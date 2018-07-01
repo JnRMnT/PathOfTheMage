@@ -1,6 +1,6 @@
 ﻿using DuloGames.UI;
 using JMGames.Framework;
-using JMGames.Scripts.Entities;
+using JMGames.Common.Entities;
 using JMGames.Scripts.Managers;
 using UnityEngine;
 

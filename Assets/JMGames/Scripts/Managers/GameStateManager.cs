@@ -1,6 +1,6 @@
 ﻿using JMGames.Common;
 using JMGames.Framework;
-using JMGames.Scripts.Entities;
+using JMGames.Common.Entities;
 using JMGames.Scripts.ObjectControllers.Character;
 using UnityEngine;
 using UnityEngine.SceneManagement;

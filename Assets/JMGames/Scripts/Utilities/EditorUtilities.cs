@@ -7,6 +7,7 @@ using UnityEditor;
 
 namespace JMGames.Scripts.Utilities
 {
+#if UNITY_EDITOR
     public class EditorUtilities
     {
         public static Type GetSerializedPropertyType(SerializedProperty property)
@@ -16,4 +17,5 @@ namespace JMGames.Scripts.Utilities
             return fieldInfo.FieldType;
         }
     }
+#endif
 }

@@ -16,7 +16,7 @@ namespace JMGames.Scripts.UI.Dialogs
 
         public DialogItemDefinition Definition;
 
-        public override void DoStart()
+        public void Initialize()
         {
             if (Definition == null || Definition.Item == null)
             {
@@ -25,11 +25,27 @@ namespace JMGames.Scripts.UI.Dialogs
                 Definition.Item = randomItem;
             }
 
-            GetComponentInChildren<DialogItemTitleInitializer>().Initialize(this);
-            GetComponentInChildren<DialogItemContentInitializer>().Initialize(this);
-            GetComponentInChildren<DialogItemRewardsInitializer>().Initialize(this);
-            GetComponentInChildren<DialogItemObjectivesInitializer>().Initialize(this);            
-            GetComponentInChildren<ResponseItemsInitializer>().Initialize(this);
+            InitializeContent();
+        }
+
+        public void Initialize(JMDialogsBase.DialogItem item)
+        {
+            if (Definition == null)
+            {
+                Definition = ScriptableObject.CreateInstance<DialogItemDefinition>();
+            }
+
+            Definition.Item = item;
+            InitializeContent();
+        }
+
+        private void InitializeContent()
+        {
+            GetComponentInChildren<DialogItemTitleInitializer>(true).Initialize(this);
+            GetComponentInChildren<DialogItemContentInitializer>(true).Initialize(this);
+            GetComponentInChildren<DialogItemRewardsInitializer>(true).Initialize(this);
+            GetComponentInChildren<DialogItemObjectivesInitializer>(true).Initialize(this);
+            GetComponentInChildren<ResponseItemsInitializer>(true).Initialize(this);
             UIManager.Instance.SetCursorVisibility(true);
         }
     }

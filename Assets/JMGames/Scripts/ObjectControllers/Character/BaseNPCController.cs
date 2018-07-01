@@ -1,9 +1,13 @@
 ﻿using JMGames.Scripts.Behaviours.Actions;
 using JMGames.Scripts.EditorScripts;
-using JMGames.Scripts.Entities;
+using JMGames.Common.Entities;
 using System;
 using TMPro;
 using UnityEngine;
+using JMGames.Scripts.Managers;
+using JMGames.Scripts.UI.Dialogs;
+using BaseDialogs = JMGames.JMDialogs.Infrastructure.Base;
+using JMGames.Common.Enums;
 
 namespace JMGames.Scripts.ObjectControllers.Character
 {
@@ -13,7 +17,9 @@ namespace JMGames.Scripts.ObjectControllers.Character
 
         public NPCTypeEnum Type;
         [SerializeField]
+#if UNITY_EDITOR
         [EnumFlagsAttribute]
+#endif
         public NPCTradingTypeEnum TradingType;
 
         public override void DoStart()
@@ -80,7 +86,13 @@ namespace JMGames.Scripts.ObjectControllers.Character
 
         public override void OnInteracted()
         {
+            DialogManager.Instance.OnDialogEnded += OnDialogEnded;
+            DialogManager.StartDialog(GetComponent<Dialog>().Definition.Item);
+        }
 
+        public void OnDialogEnded(BaseDialogs.Dialog dialog, DialogEndReasonType endReason)
+        {
+            DialogManager.Instance.OnDialogEnded -= OnDialogEnded;
             base.OnInteracted();
         }
     }

@@ -581,6 +581,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4802111540241250}
   - component: {fileID: 114041335985069974}
+  - component: {fileID: 114383053745822402}
   m_Layer: 12
   m_Name: NPC_Peasant_M
   m_TagString: Untagged
@@ -761,8 +762,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1605169927698258}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 0, y: 2.255, z: 0}
-  m_LocalScale: {x: 0.0765214, y: 0.076521404, z: 0.076521404}
+  m_LocalPosition: {x: 0, y: 2.123, z: 0}
+  m_LocalScale: {x: 0.048534192, y: 0.048534196, z: 0.048534196}
   m_Children: []
   m_Father: {fileID: 4567168820034552}
   m_RootOrder: 0
@@ -1423,6 +1424,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: 6d96c4da23ff8484f98057332ed6c6b4, type: 3}
   m_StaticBatchInfo:
@@ -1461,6 +1463,7 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!102 &102977910058569746
 TextMesh:
   serializedVersion: 3
@@ -1501,10 +1504,23 @@ MonoBehaviour:
   InverseX: 0
   InverseY: 0
   InverseZ: 0
-  NameTagMesh: {fileID: 0}
+  NameTagMesh: {fileID: 102977910058569746}
   Type: 1
   TradingType: 24
   NPCName: "\u015Ei\u015Fman"
+--- !u!114 &114383053745822402
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1794462868047166}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9717d29fb6fbe2542b44d7cee2c9390d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Type: 1
+  Definition: {fileID: 0}
 --- !u!114 &114483707757322322
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1569,6 +1585,7 @@ SkinnedMeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: b61bc9b755e09ab48ab64bb542cba2d3, type: 2}
   m_StaticBatchInfo:
@@ -1676,7 +1693,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1582523796536632}
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0.32, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 2.5, y: 2.5, z: 2.5}
   m_Children: []
   m_Father: {fileID: 4106989582992186}

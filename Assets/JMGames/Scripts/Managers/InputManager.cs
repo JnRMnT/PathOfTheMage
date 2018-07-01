@@ -2,7 +2,7 @@
 using Invector.CharacterController;
 using JMGames.Framework;
 using JMGames.Scripts.Constants;
-using JMGames.Scripts.Entities;
+using JMGames.Common.Entities;
 using JMGames.Scripts.ObjectControllers;
 using JMGames.Scripts.ObjectControllers.Character;
 using JMGames.Scripts.Spells;

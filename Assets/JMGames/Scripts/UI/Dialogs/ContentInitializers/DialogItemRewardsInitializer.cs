@@ -17,6 +17,10 @@ namespace JMGames.Scripts.UI.Dialogs.ContentInitializers
                 //TODO: Check if any reward is available if not, hide rewards panel
                 transform.parent.gameObject.SetActive(false);
             }
+            else
+            {
+                transform.parent.gameObject.SetActive(true);
+            }
         }
     }
 }

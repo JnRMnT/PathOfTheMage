@@ -17,6 +17,10 @@ namespace JMGames.Scripts.UI.Dialogs.ContentInitializers
                 //TODO: Check if any objective is available if not, hide objectives panel
                 gameObject.SetActive(false);
             }
+            else
+            {
+                gameObject.SetActive(true);
+            }
         }
     }
 }

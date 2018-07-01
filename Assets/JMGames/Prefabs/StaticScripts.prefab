@@ -39,6 +39,7 @@ GameObject:
   - component: {fileID: 114875622729267410}
   - component: {fileID: 114877064616059544}
   - component: {fileID: 114901538574372446}
+  - component: {fileID: 114848071284100054}
   m_Layer: 0
   m_Name: StaticScripts
   m_TagString: Untagged
@@ -105,6 +106,21 @@ MonoBehaviour:
   m_InputActionsPerSecond: 10
   m_RepeatDelay: 0.5
   m_ForceModuleActive: 0
+--- !u!114 &114848071284100054
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1434300868992426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54427a164c2a47141b9e343e84461713, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DialogItemWindow: {fileID: 0}
+  ActiveDialog:
+    Type: 0
+  StepIndex: 0
 --- !u!114 &114875622729267410
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -127,9 +143,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1933f0e7bfcc314aad9377c277fc812, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  InteractionText: {fileID: 0}
   CursorTexture: {fileID: 2800000, guid: 2befc74d76bdbd04ca30d5ab0ba31fc0, type: 3}
   CursorMode: 0
   HotSpot: {x: 0, y: 0}
+  NotificationText: {fileID: 0}
 --- !u!114 &114901538574372446
 MonoBehaviour:
   m_ObjectHideFlags: 1

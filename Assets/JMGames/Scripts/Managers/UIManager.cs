@@ -82,5 +82,16 @@ namespace JMGames.Scripts.Managers
                 UIManager.Instance.SetCursorVisibility(false);
             }
         }
+
+        public void OnWindowStateChanged(UIWindow window, UIWindow.VisualState state)
+        {
+            if (state == UIWindow.VisualState.Hidden)
+            {
+                if (!UIManager.Instance.HasActiveWindows(window.ID))
+                {
+                    UIManager.Instance.SetCursorVisibility(false);
+                }
+            }
+        }
     }
 }
