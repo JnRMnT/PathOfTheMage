@@ -35,11 +35,13 @@ namespace JMGames.Scripts.Managers
 
         public void OnApplicationPause(bool pause)
         {
+#if !UNITY_EDITOR
             if (pause)
             {
                 Cursor.visible = true;
                 PauseMenuWindow.Instance.Pause();
             }
+#endif
         }
 
         public void SetCursorVisibility(bool isVisible)
